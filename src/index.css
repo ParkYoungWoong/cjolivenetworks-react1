@@ -1,0 +1,4 @@
+header a.active {
+  color: red;
+  font-weight: 700; /* Bold */
+}
