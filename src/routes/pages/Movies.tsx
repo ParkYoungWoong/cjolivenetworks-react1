@@ -1,26 +1,11 @@
-import { useState } from 'react'
 import { Link, Outlet } from 'react-router-dom'
-
-export type Movies = Movie[]
-export interface Movie {
-  Title: string
-  Year: string
-  imdbID: string
-  Type: string
-  Poster: string
-}
+import { useMovieStore } from '@/stores/movie'
 
 export default function Movies() {
-  const [searchText, setSearchText] = useState('') // 타입 추론!
-  const [movies, setMovies] = useState<Movies>([])
-
-  async function fetchMovies() {
-    const res = await fetch(
-      `https://omdbapi.com/?apikey=7035c60c&s=${searchText}`
-    )
-    const { Search } = await res.json()
-    setMovies(Search)
-  }
+  const searchText = useMovieStore(state => state.searchText)
+  const setSearchText = useMovieStore(state => state.setSearchText)
+  const movies = useMovieStore(state => state.movies)
+  const fetchMovies = useMovieStore(state => state.fetchMovies)
 
   return (
     <>
@@ -37,7 +22,11 @@ export default function Movies() {
         {movies.map(movie => {
           return (
             <li key={movie.imdbID}>
-              <Link to={`/movies/${movie.imdbID}`}>{movie.Title}</Link>
+              <Link
+                to={`/movies/${movie.imdbID}`}
+                preventScrollReset={true}>
+                {movie.Title}
+              </Link>
             </li>
           )
         })}

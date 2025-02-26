@@ -28,6 +28,7 @@ const router = createBrowserRouter([
         path: '/movies',
         element: <Movies />,
         loader: requiresAuth,
+        hydrateFallbackElement: <></>,
         children: [
           {
             path: '/movies/:movieId',
