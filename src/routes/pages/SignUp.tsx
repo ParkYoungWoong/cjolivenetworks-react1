@@ -7,7 +7,6 @@ export default function SignIn() {
   // /signin?redirectTo=/movies
   const [searchParams] = useSearchParams()
   const query = Object.fromEntries(searchParams)
-  console.log(query)
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     // `<form>`의 새로고침(기본 동작)을 방지합니다.
@@ -16,17 +15,22 @@ export default function SignIn() {
     const formData = new FormData(event.currentTarget)
     const email = formData.get('email') as string
     const password = formData.get('password') as string
+    const displayName = formData.get('displayName') as string
 
     // 로그인 정보가 모두 있으면, 임시로 로그인 처리합니다.
-    if (email && password) {
-      await signIn({ email, password })
+    if (email && password && displayName) {
+      await signUp({ email, password, displayName })
       navigate(query.redirectTo || '/')
     }
   }
 
-  async function signIn(payload: { email: string; password: string }) {
+  async function signUp(payload: {
+    email: string
+    password: string
+    displayName: string
+  }) {
     const res = await fetch(
-      'https://asia-northeast3-heropy-api.cloudfunctions.net/api/auth/login',
+      'https://asia-northeast3-heropy-api.cloudfunctions.net/api/auth/signup',
       {
         method: 'POST',
         headers: {
@@ -52,14 +56,18 @@ export default function SignIn() {
         <input
           type="email"
           name="email"
-          placeholder="Email"
+          placeholder="이메일"
         />
         <input
           type="password"
           name="password"
-          placeholder="Password"
+          placeholder="비밀번호"
         />
-        <button type="submit">Sign In</button>
+        <input
+          name="displayName"
+          placeholder="표시 이름"
+        />
+        <button type="submit">회원가입</button>
       </form>
     </>
   )

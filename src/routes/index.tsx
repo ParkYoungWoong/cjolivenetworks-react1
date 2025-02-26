@@ -7,6 +7,7 @@ import MovieDetails from './pages/MovieDetails'
 import Movies from './pages/Movies'
 import NotFound from './pages/NotFound'
 import SignIn from './pages/SignIn'
+import SignUp from './pages/SignUp'
 
 const router = createBrowserRouter([
   {
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
       {
         path: '/signin',
         element: <SignIn />
+      },
+      {
+        path: '/signup',
+        element: <SignUp />
       },
       {
         path: '/movies',

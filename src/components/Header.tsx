@@ -17,6 +17,10 @@ const navigations = [
   {
     to: '/signin',
     label: 'Log In'
+  },
+  {
+    to: '/signup',
+    label: 'Sign Up'
   }
 ]
 
