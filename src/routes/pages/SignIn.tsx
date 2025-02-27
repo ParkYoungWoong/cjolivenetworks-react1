@@ -1,7 +1,9 @@
 import { useSearchParams, useNavigate } from 'react-router-dom'
+import { useUserStore } from '@/stores/user'
 
 // http://localhost:5173/signin?redirectTo=/movies
 export default function SignIn() {
+  const signIn = useUserStore(state => state.signIn)
   const navigate = useNavigate()
   // 쿼리스트링 정보를 가져와 사용하기 쉽게 객체로 변환합니다.
   // /signin?redirectTo=/movies
@@ -22,27 +24,6 @@ export default function SignIn() {
       await signIn({ email, password })
       navigate(query.redirectTo || '/')
     }
-  }
-
-  async function signIn(payload: { email: string; password: string }) {
-    const res = await fetch(
-      'https://asia-northeast3-heropy-api.cloudfunctions.net/api/auth/login',
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          apikey: 'KDT8_bcAWVpD8',
-          username: 'KDT8_ParkYoungWoong'
-        },
-        body: JSON.stringify(payload)
-      }
-    )
-    const { user, accessToken } = await res.json()
-    if (user) {
-      localStorage.setItem('accessToken', accessToken)
-      return user
-    }
-    return null
   }
 
   return (

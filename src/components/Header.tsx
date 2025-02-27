@@ -1,5 +1,6 @@
 import { NavLink } from 'react-router-dom'
 import styles from './Header.module.css'
+import { useUserStore } from '@/stores/user'
 
 const navigations = [
   {
@@ -25,6 +26,8 @@ const navigations = [
 ]
 
 export default function Header() {
+  const currentUser = useUserStore(state => state.currentUser)
+
   return (
     <header>
       {navigations.map(nav => {
@@ -39,6 +42,7 @@ export default function Header() {
           </NavLink>
         )
       })}
+      <div>{currentUser?.displayName}</div>
     </header>
   )
 }
