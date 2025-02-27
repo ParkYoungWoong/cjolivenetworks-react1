@@ -7,8 +7,8 @@ import {
 } from 'zustand/middleware'
 
 export const useCountStore = create(
-  devtools(
-    persist(
+  persist(
+    devtools(
       subscribeWithSelector(
         combine(
           {
@@ -31,16 +31,16 @@ export const useCountStore = create(
             }
           }
         )
-      ),
-      {
-        name: 'countStore',
-        // storage: createJSONStorage(() => sessionStorage),
-        // partialize: (state) => ({
-        //   count: state.count
-        //
-        version: 0
-      }
-    )
+      )
+    ),
+    {
+      name: 'countStore',
+      // storage: createJSONStorage(() => sessionStorage),
+      // partialize: (state) => ({
+      //   count: state.count
+      //
+      version: 0
+    }
   )
 )
 
