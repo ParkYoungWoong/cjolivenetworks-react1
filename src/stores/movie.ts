@@ -13,7 +13,8 @@ export const useMovieStore = create(
   combine(
     {
       movies: [] as Movie[], // 타입 단언!
-      searchText: ''
+      searchText: '',
+      isLoading: false
     },
     (set, get) => {
       return {
@@ -23,13 +24,17 @@ export const useMovieStore = create(
           })
         },
         fetchMovies: async () => {
-          const { searchText } = get()
+          const { searchText, isLoading } = get()
+          if (isLoading) return
+
+          set({ isLoading: true })
           const res = await fetch(
             `https://omdbapi.com/?apikey=7035c60c&s=${searchText}`
           )
           const { Search } = await res.json()
           set({
-            movies: Search
+            movies: Search,
+            isLoading: false
           })
         }
       }

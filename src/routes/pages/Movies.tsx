@@ -3,6 +3,7 @@ import { Link, Outlet } from 'react-router-dom'
 import { useMovieStore } from '@/stores/movie'
 import type { Movie } from '@/stores/movie'
 import { useQuery } from '@tanstack/react-query'
+import Loader from '@/components/Loader'
 
 export default function Movies() {
   const [inputText, setInputText] = useState('')
@@ -14,7 +15,7 @@ export default function Movies() {
   // ['movies', 'abc']
   // ['movies', 'frozen']
 
-  const { data: movies } = useQuery<Movie[]>({
+  const { data: movies, isFetching } = useQuery<Movie[]>({
     queryKey: ['movies', searchText],
     queryFn: async () => {
       const res = await fetch(
@@ -23,7 +24,7 @@ export default function Movies() {
       const { Search } = await res.json()
       return Search
     },
-    staleTime: 1000 * 60 * 5 // 5분
+    staleTime: 1000 * 60 // 1분
   })
 
   function handleSearch() {
@@ -41,6 +42,7 @@ export default function Movies() {
         />
         <button onClick={handleSearch}>검색</button>
       </div>
+      {isFetching && <Loader />}
       <ul>
         {movies &&
           movies.map(movie => {
@@ -56,19 +58,3 @@ export default function Movies() {
     </>
   )
 }
-
-// Next.js
-// 서버 컴포넌트 vs 클라이언트 컴포넌트
-
-const obj = {
-  a: 1,
-  b: 2
-}
-console.log(obj.a) // 1
-
-const { a } = obj
-console.log(a) // 1
-
-const { a: count } = obj
-console.log(count) // 1
-console.log(a) // undefined
